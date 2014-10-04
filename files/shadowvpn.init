@@ -1,0 +1,20 @@
+#!/bin/sh /etc/rc.common
+# shadowvpn init script
+
+START=90
+STOP=15
+EXTRA_COMMANDS="restart"
+
+CONFIG=/etc/shadowvpn/client.conf
+
+start() {
+    shadowvpn -c $CONFIG -s start
+}
+
+stop() {
+    shadowvpn -c $CONFIG -s stop
+}
+
+restart() {
+    shadowvpn -c $CONFIG -s restart
+}
