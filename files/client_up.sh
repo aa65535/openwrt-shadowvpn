@@ -42,8 +42,10 @@ route del default
 route add default gw 10.7.0.1
 echo "default route changed to 10.7.0.1"
 
-# insert chnroutes rules
+# chnroutes list file, You can specify a custom routes list file
 chnroutes=/etc/chinadns_chnroute.txt
+
+# insert chnroutes rules
 if [ -f $chnroutes ]; then
   suf="via $old_gw dev $old_intf"
   awk -v suf="$suf" '$1 ~ /^([0-9]{1,3}\.){3}[0-9]{1,3}/\
