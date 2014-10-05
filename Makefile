@@ -22,6 +22,7 @@ define Package/ShadowVPN/Default
 	CATEGORY:=Network
 	TITLE:=A fast, safe VPN based on libsodium
 	URL:=https://github.com/clowwindy/ShadowVPN
+	DEPENDS:=+kmod-tun +ip
 endef
 
 define Package/ShadowVPN
