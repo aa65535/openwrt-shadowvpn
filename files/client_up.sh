@@ -15,7 +15,7 @@ ifconfig $intf mtu $mtu
 
 # get current gateway
 echo "[$(date)] reading gateway and interface name from route table"
-eval $(ip route show | awk '/^default/{printf("old_gw=%s;old_intf=%s",$3,$NF)}')
+eval $(ip route show | awk '/^default/{printf("old_gw=%s;old_intf=%s",$3,$5)}')
 
 # turn on NAT over VPN and old_intf
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
