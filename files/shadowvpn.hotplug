@@ -1,0 +1,8 @@
+#!/bin/sh
+
+[ "$ACTION" = ifup ] || exit 0
+
+if ps | grep -v "grep" | grep "shadowvpn"; then
+	/etc/init.d/shadowvpn restart
+	logger -t ShadowVPN "Restart ShadowVPN due to ifup of $INTERFACE ($DEVICE)"
+fi

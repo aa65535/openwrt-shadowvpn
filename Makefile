@@ -26,7 +26,7 @@ define Package/ShadowVPN/Default
 endef
 
 define Package/ShadowVPN
-  $(call Package/ShadowVPN/Default)
+	$(call Package/ShadowVPN/Default)
 endef
 
 define Package/ShadowVPN/description
@@ -35,8 +35,6 @@ endef
 
 define Package/ShadowVPN/conffiles
 /etc/shadowvpn/client.conf
-/etc/shadowvpn/client_up.sh
-/etc/shadowvpn/client_down.sh
 endef
 
 define Package/ShadowVPN/install
@@ -48,6 +46,8 @@ define Package/ShadowVPN/install
 	$(INSTALL_DATA) ./files/client_down.sh $(1)/etc/shadowvpn/client_down.sh
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/shadowvpn $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
+	$(INSTALL_DATA) ./files/shadowvpn.hotplug $(1)/etc/hotplug.d/iface/30-shadowvpn
 endef
 
 $(eval $(call BuildPackage,ShadowVPN))
