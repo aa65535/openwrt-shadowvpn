@@ -22,9 +22,13 @@ if [ -z "$old_gw" ] || [ -z "$old_intf" ]; then
 fi
 
 # change routing table
-route del $server gw $old_gw
+route del $server $old_intf
 route del default
-route add default gw $old_gw
+if [ "$old_intf" == "pppoe-wan" ]; then
+  route add default $old_intf
+else
+  route add default gw $old_gw
+fi
 echo "$(date) [DOWN] default route changed to $old_gw"
 
 # remove chnroute rules

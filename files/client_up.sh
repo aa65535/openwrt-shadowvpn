@@ -24,7 +24,7 @@ iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
 
 # if current gateway is 10.7.0.1, it indicates that our gateway
 # is already changed, read from saved file.
-if [ "$old_gw" == "10.7.0.1" ]; then
+if [ "$old_intf" == "$intf" ]; then
   echo "$(date) [UP] reading old gateway and old interface name"
   old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf) || {
     echo "$(date) [UP] can not read gateway or interface name, check up.sh"
@@ -32,12 +32,19 @@ if [ "$old_gw" == "10.7.0.1" ]; then
   }
 fi
 
-echo "$(date) [UP] saving old gateway and old interface name"
+# save old gateway and old interface name
 echo $old_gw > /tmp/old_gw
 echo $old_intf > /tmp/old_intf
+echo "$(date) [UP] saving old gateway and old interface name"
 
 # change routing table
-route add $server gw $old_gw
+if [ "$old_intf" == "pppoe-wan" ]; then
+  route add $server $old_intf
+  suf="dev $old_intf"
+else
+  route add $server gw $old_gw
+  suf="via $old_gw dev $old_intf"
+fi
 route del default
 route add default gw 10.7.0.1
 echo "$(date) [UP] default route changed to 10.7.0.1"
@@ -47,7 +54,6 @@ chnroute=/etc/chinadns_chnroute.txt
 
 # insert chnroute rules
 if [ -f $chnroute ]; then
-  suf="via $old_gw dev $old_intf"
   awk -v suf="$suf" '$1 ~ /^([0-9]{1,3}\.){3}[0-9]{1,3}/\
     {printf("route add %s %s\n",$1,suf)}' $chnroute > /tmp/routes
   ip -batch /tmp/routes
