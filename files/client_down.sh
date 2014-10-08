@@ -14,29 +14,28 @@
 
 # get old gateway and old interface
 echo "$(date) [DOWN] reading old gateway and old interface"
-old_gw=$(cat /tmp/old_gw) && rm -f /tmp/old_gw
-old_intf=$(cat /tmp/old_intf) && rm -f /tmp/old_intf
-if [ -z "$old_gw" ] || [ -z "$old_intf" ]; then
+old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf) || {
   echo "$(date) [DOWN] can not read gateway or interface, check up.sh"
   exit 1
-fi
+}
 
 # change routing table
 route del $server $old_intf
 route del default
-if [ "$old_intf" == "pppoe-wan" ]; then
+if [ -z "$old_gw" ]; then
   route add default $old_intf
 else
   route add default gw $old_gw
 fi
-echo "$(date) [DOWN] default route changed to $old_gw"
+echo "$(date) [DOWN] default route changed to old gateway"
 
 # remove chnroute rules
 if [ -f /tmp/routes ]; then
   sed -i 's#route add#route del#g' /tmp/routes
   ip -batch /tmp/routes
-  rm -f /tmp/routes
   echo "$(date) [DOWN] remove chnroute rules"
 fi
+
+rm -f /tmp/old_gw /tmp/old_intf /tmp/routes
 
 echo "$(date) [DOWN] done"

@@ -13,17 +13,30 @@ sysctl -w net.ipv4.ip_forward=1>/dev/null 2>&1
 ifconfig $intf 10.7.0.2 netmask 255.255.255.0
 ifconfig $intf mtu $mtu
 
-# get current gateway
+# get current gateway and interface
 echo "$(date) [UP] reading gateway and interface name from route table"
-eval $(ip route show | awk '/^default/{printf("old_gw=%s;old_intf=%s",$3,$5)}')
+eval $(ip route show | awk '/^default/ {
+	for (i=1; i<=NF; i++) {
+		if ($i == "via") {
+			printf("old_gw=%s;", $(i+1))
+		}
+		if ($i == "dev") {
+			printf("old_intf=%s;", $(i+1))
+		}
+	}
+}')
+
+if [ -z "$old_intf" ]; then
+	echo "can not get interface name"
+	exit 1
+fi
 
 # turn on NAT over VPN and old gateway
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
 iptables -A FORWARD -i $intf -o $old_intf -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
 
-# if current gateway is 10.7.0.1, it indicates that our gateway
-# is already changed, read from saved file.
+# if current interface is tun, read from saved file.
 if [ "$old_intf" == "$intf" ]; then
   echo "$(date) [UP] reading old gateway and old interface name"
   old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf) || {
@@ -38,7 +51,7 @@ echo $old_intf > /tmp/old_intf
 echo "$(date) [UP] saving old gateway and old interface name"
 
 # change routing table
-if [ "$old_intf" == "pppoe-wan" ]; then
+if [ -z "$old_gw" ]; then
   route add $server $old_intf
   suf="dev $old_intf"
 else
