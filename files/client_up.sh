@@ -17,24 +17,15 @@ ifconfig $intf mtu $mtu
 echo "$(date) [UP] reading gateway and interface name from route table"
 eval $(ip route show | awk '/^default/ {
 	for (i=1; i<=NF; i++) {
-		if ($i == "via") {
-			printf("old_gw=%s;", $(i+1))
-		}
-		if ($i == "dev") {
-			printf("old_intf=%s;", $(i+1))
-		}
+		if ($i == "via") { printf("old_gw=%s;", $(i+1)) }
+		if ($i == "dev") { printf("old_intf=%s;", $(i+1)) }
 	}
 }')
 
 if [ -z "$old_intf" ]; then
-	echo "can not get interface name"
+	echo "$(date) [UP] can not get interface name"
 	exit 1
 fi
-
-# turn on NAT over VPN and old gateway
-iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-iptables -A FORWARD -i $intf -o $old_intf -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
 
 # if current interface is tun, read from saved file.
 if [ "$old_intf" == "$intf" ]; then
@@ -49,6 +40,11 @@ fi
 echo $old_gw > /tmp/old_gw
 echo $old_intf > /tmp/old_intf
 echo "$(date) [UP] saving old gateway and old interface name"
+
+# turn on NAT over VPN and old gateway
+iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
+iptables -A FORWARD -i $intf -o $old_intf -j ACCEPT
+iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
 
 # change routing table
 if [ -z "$old_gw" ]; then
