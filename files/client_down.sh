@@ -13,9 +13,9 @@
 /etc/init.d/firewall restart >/dev/null 2>&1
 
 # get old gateway and old interface
-echo "$(date) [DOWN] reading old gateway and old interface"
+echo "$(date) [DOWN] reading old gateway and old interface from saved file"
 old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf) || {
-  echo "$(date) [DOWN] can not read gateway or interface, check up.sh"
+  echo "$(date) [DOWN] failed to get interface from saved file, check up.sh"
   exit 1
 }
 
@@ -24,16 +24,17 @@ route del $server $old_intf
 route del default
 if [ -z "$old_gw" ]; then
   route add default $old_intf
+  echo "$(date) [DOWN] default route changed to $old_intf"
 else
   route add default gw $old_gw
+  echo "$(date) [DOWN] default route changed to $old_gw"
 fi
-echo "$(date) [DOWN] default route changed to old gateway"
 
 # remove chnroute rules
 if [ -f /tmp/routes ]; then
   sed -i 's#route add#route del#g' /tmp/routes
   ip -batch /tmp/routes
-  echo "$(date) [DOWN] remove chnroute rules"
+  echo "$(date) [DOWN] chnroute rules removed"
 fi
 
 rm -f /tmp/old_gw /tmp/old_intf /tmp/routes
