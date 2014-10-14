@@ -28,7 +28,7 @@ if [ -z "$old_intf" ]; then
 fi
 
 # if current interface is tun, read from saved file.
-if [ "$old_intf" == "$intf" ]; then
+if [ "$old_intf" = "$intf" ]; then
   echo "$(date) [UP] reading gateway and interface from saved file"
   old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf) || {
     echo "$(date) [UP] can not read gateway or interface, check up.sh"
