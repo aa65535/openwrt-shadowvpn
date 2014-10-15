@@ -10,7 +10,7 @@
 # sysctl -w net.ipv4.ip_forward=0>/dev/null 2>&1
 
 # turn off NAT over VPN and old gateway
-/etc/init.d/firewall restart >/dev/null 2>&1
+/etc/init.d/firewall restart>/dev/null 2>&1
 
 # get old gateway and old interface
 echo "$(date) [DOWN] reading old gateway and old interface from saved file"
