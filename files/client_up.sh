@@ -16,15 +16,15 @@ ifconfig $intf mtu $mtu
 # get current gateway and interface
 echo "$(date) [UP] get gateway and interface from route table"
 eval $(ip route show | awk '/^default/ {
-	for (i=1; i<=NF; i++) {
-		if ($i == "via") { printf("old_gw=%s;", $(i+1)) }
-		if ($i == "dev") { printf("old_intf=%s;", $(i+1)) }
-	}
+  for (i=1; i<=NF; i++) {
+    if ($i == "via") { printf("old_gw=%s;", $(i+1)) }
+    if ($i == "dev") { printf("old_intf=%s;", $(i+1)) }
+  }
 }')
 
 if [ -z "$old_intf" ]; then
-	echo "$(date) [UP] failed to get interface from route table"
-	exit 1
+  echo "$(date) [UP] failed to get interface from route table"
+  exit 1
 fi
 
 # if current interface is tun, read from saved file.
