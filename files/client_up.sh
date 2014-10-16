@@ -43,7 +43,8 @@ echo "$(date) [UP] save gateway and interface to file"
 
 # turn on NAT over VPN and old gateway
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-iptables -P FORWARD ACCEPT
+iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
+iptables -A FORWARD -i $intf -o $old_intf -j ACCEPT
 iptables -D delegate_forward -j reject>/dev/null 2>&1
 
 # change routing table
