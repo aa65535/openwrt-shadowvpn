@@ -8,7 +8,7 @@
 
 PID=$(cat $pidfile)
 loger() {
-	echo "$(date '+%c') up.$1 ShadowVPN[$PID] $2"
+  echo "$(date '+%c') up.$1 ShadowVPN[$PID] $2"
 }
 
 # turn on IP forwarding
