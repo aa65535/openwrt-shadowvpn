@@ -35,10 +35,11 @@ fi
 # if current interface is tun, read from saved file.
 if [ "$old_intf" = "$intf" ]; then
   loger notice "reading gateway and interface from saved file"
-  old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf) || {
+  old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf)
+  if [ -z "$old_intf" ]; then
     loger error "can not read gateway or interface, check up.sh"
     exit 1
-  }
+  fi
 fi
 
 # save gateway and interface to file
