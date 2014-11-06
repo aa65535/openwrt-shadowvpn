@@ -8,21 +8,21 @@ EXTRA_COMMANDS="restart"
 CONFIG=/etc/shadowvpn/client.conf
 
 boot() {
-    if [ ! -f "/dev/net/tun" ]; then
-        mkdir /dev/net
-        mknod /dev/net/tun c 10 200
-        chmod 0666 /dev/net/tun
-    fi
+	if [ ! -f "/dev/net/tun" ]; then
+		mkdir /dev/net
+		mknod /dev/net/tun c 10 200
+		chmod 0666 /dev/net/tun
+	fi
 }
 
 start() {
-    shadowvpn -c $CONFIG -s start
+	shadowvpn -c $CONFIG -s start
 }
 
 stop() {
-    shadowvpn -c $CONFIG -s stop
+	shadowvpn -c $CONFIG -s stop
 }
 
 restart() {
-    shadowvpn -c $CONFIG -s restart
+	shadowvpn -c $CONFIG -s restart
 }
