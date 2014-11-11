@@ -19,7 +19,7 @@ loger info "reading old gateway and old interface from saved file"
 old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf)
 
 if [ -z "$old_intf" ]; then
-	loger error "failed to get interface from saved file, check up.sh"
+	loger error "can't get interface from saved file, check up.sh"
 	exit 1
 fi
 
@@ -28,7 +28,6 @@ loger notice "turn off NAT over $intf and $old_intf"
 iptables -t nat -D POSTROUTING -o $intf -j MASQUERADE
 iptables -D FORWARD -i $old_intf -o $intf -j ACCEPT
 iptables -D FORWARD -i $intf -o $old_intf -j ACCEPT
-[ -f /tmp/iptables ] && eval $(cat /tmp/iptables)
 
 # change routing table
 route del $server $old_intf
@@ -48,6 +47,6 @@ if [ -f /tmp/routes ]; then
 	loger notice "chnroute rules have been removed"
 fi
 
-rm -f /tmp/old_gw /tmp/old_intf /tmp/routes /tmp/iptables
+rm -f /tmp/old_gw /tmp/old_intf /tmp/routes
 
 loger info "$0 completed"

@@ -28,7 +28,7 @@ eval $(ip route show | awk '/^default/ {
 }')
 
 if [ -z "$old_intf" ]; then
-	loger error "can not get interface from route table"
+	loger error "can't get interface from route table"
 	exit 1
 fi
 
@@ -37,7 +37,7 @@ if [ "$old_intf" = "$intf" ]; then
 	loger notice "reading gateway and interface from saved file"
 	old_gw=$(cat /tmp/old_gw) && old_intf=$(cat /tmp/old_intf)
 	if [ -z "$old_intf" ]; then
-		loger error "can not read gateway or interface, check up.sh"
+		loger error "can't read gateway or interface, check up.sh"
 		exit 1
 	fi
 fi
@@ -52,8 +52,11 @@ loger notice "turn on NAT over $intf and $old_intf"
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
 iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
 iptables -A FORWARD -i $intf -o $old_intf -j ACCEPT
-iptables -D delegate_forward -j reject>/dev/null 2>&1 && \
-echo "iptables -A delegate_forward -j reject" >/tmp/iptables
+iptables -P FORWARD ACCEPT
+
+while iptables-save -t filter | grep -q 'delegate_forward -j reject'; do
+	iptables -D delegate_forward -j reject
+done
 
 # change routing table
 if [ -z "$old_gw" ]; then
