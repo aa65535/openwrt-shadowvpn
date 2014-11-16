@@ -33,8 +33,8 @@ start_vpn() {
 	sed -e "s#|SERVER|#$server#g" \
 		-e "s#|PORT|#$port#g" \
 		-e "s#|PASSWORD|#$password#g" \
-		-e "s#|MTU|#$mtu#g" \
-		-e "s#|INTF|#$intf#g" >$CONFIG
+		-e "s#|MTU|#${mtu:-1440}#g" \
+		-e "s#|INTF|#${intf:-tun0}#g" >$CONFIG
 	/usr/bin/shadowvpn -c $CONFIG -s start
 }
 
