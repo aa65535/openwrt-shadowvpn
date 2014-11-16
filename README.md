@@ -32,9 +32,11 @@ OpenWrt's ShadowVPN Makefile
 配置说明
 ---
 
- - VPN 网关默认为 `10.7.0.1` 需要保证此网段未被占用
+ - VPN 网关默认为 `10.7.0.1` 需要保证此网段未被占用  
 
- - 强烈建议[搭配 ChinaDNS-C 使用][8], 以获得更好的使用体验
+ - 强烈建议[搭配 ChinaDNS-C 使用][8], 以获得更好的使用体验  
+
+ - 可使用 [LuCI][L] 进行配置  
 
 相关项目
 ---
@@ -54,3 +56,4 @@ OpenWrt's ShadowVPN Makefile
   [7]: https://github.com/aa65535/openwrt-shadowsocks
   [8]: https://sourceforge.net/p/openwrt-dist/wiki/Plan6/
   [S]: http://downloads.openwrt.org/snapshots/trunk/
+  [L]: https://github.com/aa65535/openwrt-dist-luci
