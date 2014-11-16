@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ShadowVPN
 PKG_VERSION:=0.1.3
-PKG_RELEASE=$(PKG_SOURCE_VERSION)
+PKG_RELEASE=2
 
 PKG_SOURCE:=shadowvpn-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/clowwindy/ShadowVPN/releases/download/$(PKG_VERSION)
@@ -36,14 +36,19 @@ A fast, safe VPN based on libsodium
 endef
 
 define Package/ShadowVPN/conffiles
+/etc/config/shadowvpn
 /etc/shadowvpn/client.conf
+/etc/shadowvpn/client_up.sh
+/etc/shadowvpn/client_down.sh
 endef
 
 define Package/ShadowVPN/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/shadowvpn.init $(1)/etc/init.d/shadowvpn
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_BIN) ./files/shadowvpn.config $(1)/etc/config/shadowvpn
 	$(INSTALL_DIR) $(1)/etc/shadowvpn
-	$(INSTALL_CONF) ./files/client.conf $(1)/etc/shadowvpn/client.conf
+	$(INSTALL_DATA) ./files/client.conf $(1)/etc/shadowvpn/client.conf
 	$(INSTALL_DATA) ./files/client_up.sh $(1)/etc/shadowvpn/client_up.sh
 	$(INSTALL_DATA) ./files/client_down.sh $(1)/etc/shadowvpn/client_down.sh
 	$(INSTALL_DIR) $(1)/usr/bin
