@@ -23,11 +23,11 @@ if [ -z "$old_intf" ]; then
 	exit 1
 fi
 
-# turn off NAT over VPN and old gateway
+# turn off NAT over VPN
 loger notice "turn off NAT over $intf and $old_intf"
 iptables -t nat -D POSTROUTING -o $intf -j MASQUERADE
-iptables -D FORWARD -i $old_intf -o $intf -j ACCEPT
-iptables -D FORWARD -i $intf -o $old_intf -j ACCEPT
+iptables -D FORWARD -o $intf -j ACCEPT
+iptables -D FORWARD -i $intf -j ACCEPT
 
 # change routing table
 route del $server $old_intf

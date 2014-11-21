@@ -47,16 +47,11 @@ echo $old_gw >/tmp/old_gw
 echo $old_intf >/tmp/old_intf
 loger info "save gateway and interface to file"
 
-# turn on NAT over VPN and old gateway
+# turn on NAT over VPN
 loger notice "turn on NAT over $intf and $old_intf"
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-iptables -A FORWARD -i $old_intf -o $intf -j ACCEPT
-iptables -A FORWARD -i $intf -o $old_intf -j ACCEPT
-iptables -P FORWARD ACCEPT
-
-while iptables-save -t filter | grep -q 'delegate_forward -j reject'; do
-	iptables -D delegate_forward -j reject
-done
+iptables -I FORWARD 1 -o $intf -j ACCEPT
+iptables -I FORWARD 1 -i $intf -j ACCEPT
 
 # change routing table
 if [ -z "$old_gw" ]; then
