@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ShadowVPN
-PKG_VERSION:=0.1.3
-PKG_RELEASE:=2
+PKG_VERSION:=0.1.4
+PKG_RELEASE:=1
 
 PKG_SOURCE:=shadowvpn-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/clowwindy/ShadowVPN/releases/download/$(PKG_VERSION)
