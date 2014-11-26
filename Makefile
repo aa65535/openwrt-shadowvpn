@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ShadowVPN
 PKG_VERSION:=0.1.4
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=shadowvpn-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/clowwindy/ShadowVPN/releases/download/$(PKG_VERSION)
@@ -38,8 +38,6 @@ endef
 define Package/ShadowVPN/conffiles
 /etc/config/shadowvpn
 /etc/shadowvpn/client.conf
-/etc/shadowvpn/client_up.sh
-/etc/shadowvpn/client_down.sh
 endef
 
 define Package/ShadowVPN/install
