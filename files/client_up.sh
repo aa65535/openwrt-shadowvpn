@@ -53,7 +53,11 @@ iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
 iptables -I FORWARD 1 -o $intf -j ACCEPT
 iptables -I FORWARD 1 -i $intf -j ACCEPT
 
-# change routing table
+# get uci setting
+route_mode=$(uci get shadowvpn.@shadowvpn[-1].route_mode 2&>/dev/null)
+route_file=$(uci get shadowvpn.@shadowvpn[-1].route_file 2&>/dev/null)
+
+# add routing table
 if [ -z "$old_gw" ]; then
 	route add $server $old_intf
 	suf="dev $old_intf"
@@ -61,19 +65,25 @@ else
 	route add $server gw $old_gw
 	suf="via $old_gw dev $old_intf"
 fi
-route del default
-route add default gw 10.7.0.1
-loger notice "default route changed to 10.7.0.1"
 
-# chnroute list file, You can specify a custom routes list file.
-chnroute=/etc/chinadns_chnroute.txt
-
-# load chnroute rules
-if [ -f $chnroute ]; then
-	awk -v suf="$suf" '$1 ~ /^([0-9]{1,3}\.){3}[0-9]{1,3}/\
-		{printf("route add %s %s\n",$1,suf)}' $chnroute >/tmp/routes
-	ip -batch /tmp/routes
-	loger notice "chnroute rules have been loaded"
+# change routing table
+if [ "$route_mode" != 2 ]; then
+	route del default
+	route add default gw 10.7.0.1
+	loger notice "default route changed to 10.7.0.1"
+	if [ "$route_mode" = 1 -a -f "$route_file" ]; then
+		awk -v suf="$suf" '$1~/^([0-9]{1,3}\.){3}[0-9]{1,3}/\
+			{printf("route add %s %s\n",$1,suf)}' $route_file >/tmp/routes
+		ip -batch /tmp/routes
+		loger notice "domestic route rules have been loaded"
+	fi
+else
+	if [ -f "$route_file" ]; then
+		awk -v suf="via 10.7.0.1 dev $intf" '$1~/^([0-9]{1,3}\.){3}[0-9]{1,3}/\
+			{printf("route add %s %s\n",$1,suf)}' $route_file >/tmp/routes
+		ip -batch /tmp/routes
+		loger notice "foreign route rules have been loaded"
+	fi
 fi
 
 loger info "$0 completed"

@@ -29,22 +29,27 @@ iptables -t nat -D POSTROUTING -o $intf -j MASQUERADE
 iptables -D FORWARD -o $intf -j ACCEPT
 iptables -D FORWARD -i $intf -j ACCEPT
 
+# get uci setting
+route_mode=$(uci get shadowvpn.@shadowvpn[-1].route_mode 2&>/dev/null)
+
 # change routing table
 route del $server $old_intf
-route del default
-if [ -z "$old_gw" ]; then
-	route add default $old_intf
-	loger notice "default route changed to $old_intf"
-else
-	route add default gw $old_gw
-	loger notice "default route changed to $old_gw"
+if [ "$route_mode" != 2 ]; then
+	route del default
+	if [ -z "$old_gw" ]; then
+		route add default $old_intf
+		loger notice "default route changed to $old_intf"
+	else
+		route add default gw $old_gw
+		loger notice "default route changed to $old_gw"
+	fi
 fi
 
-# remove chnroute rules
+# remove route rules if it exists
 if [ -f /tmp/routes ]; then
 	sed -i 's#route add#route del#g' /tmp/routes
 	ip -batch /tmp/routes
-	loger notice "chnroute rules have been removed"
+	loger notice "route rules have been removed"
 fi
 
 rm -f /tmp/old_gw /tmp/old_intf /tmp/routes
