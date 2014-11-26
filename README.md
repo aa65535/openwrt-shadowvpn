@@ -6,11 +6,9 @@ OpenWrt's ShadowVPN Makefile
 功能说明
 ---
 
- - 添加 `chnroute` 功能, 国内流量不走 VPN
+ - 添加 **路由控制** 功能, 控制流量是否走 VPN
 
-   > 默认不带 chnroute 列表文件  
-   > 通过读取 ChinaDNS-C 的 [chnroute][3] 生成国内路由规则  
-   > 可以修改 `/etc/shadowvpn/client_up.sh` 指定自定义路由  
+   > 默认不带路由文件, 可读取 ChinaDNS-C 的 [chnroute][3] 生成国内路由规则, 否则则为全局模式.  
 
 编译说明
 ---
@@ -34,9 +32,15 @@ OpenWrt's ShadowVPN Makefile
 
  - VPN 网关默认为 `10.7.0.1` 需要保证此网段未被占用  
 
- - 强烈建议[搭配 ChinaDNS-C 使用][8], 以获得更好的使用体验  
+ - 建议[搭配 ChinaDNS-C 使用][8], 以获得更好的使用体验  
 
- - 可使用 [LuCI][L] 进行配置  
+ - 关于 [LuCI][L] 中路由表设置  
+
+    * **全局模式:** 启动后全部流量都经过 VPN
+
+    * **国内路由:** 路由文件指定后, 其中的 IP 将不经过 VPN, 不指定仍然为**全局模式**  
+
+    * **国外路由:** 路由文件指定后, 只有其中的 IP 经过 VPN, 不指定将不使用 VPN  
 
 相关项目
 ---
