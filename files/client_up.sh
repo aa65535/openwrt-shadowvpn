@@ -71,19 +71,16 @@ if [ "$route_mode" != 2 ]; then
 	route del default
 	route add default gw 10.7.0.1
 	loger notice "default route changed to 10.7.0.1"
-	if [ "$route_mode" = 1 -a -f "$route_file" ]; then
-		awk -v suf="$suf" '$1~/^([0-9]{1,3}\.){3}[0-9]{1,3}/\
-			{printf("route add %s %s\n",$1,suf)}' $route_file >/tmp/routes
-		ip -batch /tmp/routes
-		loger notice "domestic route rules have been loaded"
-	fi
 else
-	if [ -f "$route_file" ]; then
-		awk -v suf="via 10.7.0.1 dev $intf" '$1~/^([0-9]{1,3}\.){3}[0-9]{1,3}/\
-			{printf("route add %s %s\n",$1,suf)}' $route_file >/tmp/routes
-		ip -batch /tmp/routes
-		loger notice "foreign route rules have been loaded"
-	fi
+	suf="via 10.7.0.1 dev $intf"
+fi
+
+# load route rules
+if [ "$route_mode" != 0 -a -f "$route_file" ]; then
+	awk -v suf="$suf" '$1 ~ /^([0-9]{1,3}\.){3}[0-9]{1,3}/\
+		{printf("route add %s %s\n",$1,suf)}' $route_file >/tmp/routes
+	ip -batch /tmp/routes
+	loger notice "route rules have been loaded"
 fi
 
 loger info "$0 completed"
