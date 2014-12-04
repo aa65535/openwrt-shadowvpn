@@ -48,9 +48,9 @@ echo $old_intf >/tmp/old_intf
 loger info "save gateway and interface to file"
 
 # turn on NAT over VPN
-loger notice "turn on NAT over $intf and $old_intf"
+loger notice "turn on NAT over $intf"
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-iptables -I FORWARD 1 -o $intf -j ACCEPT
+iptables -I FORWARD 1 -o $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -I FORWARD 1 -i $intf -j ACCEPT
 
 # get uci setting
