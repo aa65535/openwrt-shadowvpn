@@ -26,7 +26,7 @@ fi
 # turn off NAT over VPN
 loger notice "turn off NAT over $intf"
 iptables -t nat -D POSTROUTING -o $intf -j MASQUERADE
-iptables -D FORWARD -o $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -D FORWARD -o $intf -j ACCEPT
 iptables -D FORWARD -i $intf -j ACCEPT
 
 # get uci setting
