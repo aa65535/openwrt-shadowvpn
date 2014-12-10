@@ -1,6 +1,7 @@
 #!/bin/sh
 
 [ "$ACTION" = ifup ] || exit 0
+[ "$DEVICE" = lo ] && exit 0
 
 if pidof shadowvpn >/dev/null; then
 	/etc/init.d/shadowvpn restart
