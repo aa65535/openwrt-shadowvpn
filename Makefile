@@ -1,3 +1,10 @@
+#
+# Copyright (C) 2014 OpenWrt-dist
+#
+# This is free software, licensed under the MIT.
+# See /LICENSE for more information.
+#
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ShadowVPN
@@ -7,6 +14,7 @@ PKG_RELEASE:=2
 PKG_SOURCE:=shadowvpn-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/clowwindy/ShadowVPN/releases/download/$(PKG_VERSION)
 PKG_MAINTAINER:=clowwindy <clowwindy42@gmail.com>
+
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 
