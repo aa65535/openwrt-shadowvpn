@@ -1,7 +1,7 @@
 OpenWrt's ShadowVPN Makefile
 ===
 
- > 编译时默认从 [clowwindy/ShadowVPN][1] 下载源码
+ > 当前版本: 0.1.5-2  
 
 功能说明
 ---
