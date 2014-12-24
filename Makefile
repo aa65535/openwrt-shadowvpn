@@ -27,16 +27,12 @@ PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/ShadowVPN/Default
+define Package/ShadowVPN
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=A fast, safe VPN based on libsodium
 	URL:=https://github.com/clowwindy/ShadowVPN
 	DEPENDS:=+kmod-tun +ip
-endef
-
-define Package/ShadowVPN
-	$(call Package/ShadowVPN/Default)
 endef
 
 define Package/ShadowVPN/description
@@ -45,7 +41,6 @@ endef
 
 define Package/ShadowVPN/conffiles
 /etc/config/shadowvpn
-/etc/shadowvpn/client.conf
 endef
 
 define Package/ShadowVPN/install

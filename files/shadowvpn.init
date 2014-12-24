@@ -23,12 +23,12 @@ start_vpn() {
 	fi
 	mkdir -p /var/etc
 	cat $TPL | grep -v "^#" | grep -v "^$" | \
-	sed -e "s#|SERVER|#$server#g" \
-		-e "s#|PORT|#$port#g" \
-		-e "s#|PASSWORD|#$password#g" \
-		-e "s#|CONCURRENCY|#${concurrency:-1}#g" \
-		-e "s#|MTU|#${mtu:-1440}#g" \
-		-e "s#|INTF|#${intf:-tun0}#g" >$CONFIG
+	sed -e "s#|SERVER|#$server#" \
+		-e "s#|PORT|#$port#" \
+		-e "s#|PASSWORD|#$password#" \
+		-e "s#|CONCURRENCY|#${concurrency:-1}#" \
+		-e "s#|MTU|#${mtu:-1440}#" \
+		-e "s#|INTF|#${intf:-tun0}#" >$CONFIG
 	/usr/bin/shadowvpn -c $CONFIG -s start
 }
 
