@@ -9,9 +9,6 @@ loger() {
 	echo "$(date '+%c') up.$1 ShadowVPN[$PID] $2"
 }
 
-# Turn on IP forwarding
-sysctl -w net.ipv4.ip_forward=1 >/dev/null 2>&1
-
 # Configure IP address and MTU of VPN interface
 ifconfig $intf 10.7.0.2 netmask 255.255.255.0
 ifconfig $intf mtu $mtu
