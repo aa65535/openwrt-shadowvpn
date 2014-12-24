@@ -52,7 +52,7 @@ define Package/ShadowVPN/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/shadowvpn.init $(1)/etc/init.d/shadowvpn
 	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_BIN) ./files/shadowvpn.config $(1)/etc/config/shadowvpn
+	$(INSTALL_DATA) ./files/shadowvpn.config $(1)/etc/config/shadowvpn
 	$(INSTALL_DIR) $(1)/etc/shadowvpn
 	$(INSTALL_DATA) ./files/client.conf $(1)/etc/shadowvpn/client.conf
 	$(INSTALL_DATA) ./files/client_up.sh $(1)/etc/shadowvpn/client_up.sh
