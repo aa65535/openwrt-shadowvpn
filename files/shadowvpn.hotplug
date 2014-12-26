@@ -1,9 +1,10 @@
 #!/bin/sh
 
 [ "$ACTION" = ifup ] || exit 0
-[ "$DEVICE" = lo ] && exit 0
 
-if pidof shadowvpn >/dev/null; then
-	/etc/init.d/shadowvpn restart
-	logger -t ShadowVPN "Restart ShadowVPN due to ifup of $INTERFACE ($DEVICE)"
-fi
+old_intf=$(cat /tmp/shadowvpn/old_intf 2>/dev/null)
+
+[ -n "$old_intf" -a "$DEVICE" = "$old_intf" ] || exit 0
+
+/etc/init.d/shadowvpn restart
+logger -t ShadowVPN "Restart ShadowVPN due to ifup of $INTERFACE ($DEVICE)"
