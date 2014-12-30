@@ -1,38 +1,40 @@
-OpenWrt's ShadowVPN Makefile
+ShadowVPN for OpenWrt
 ===
 
- > 当前版本: 0.1.5-2  
-
-功能说明
+简介
 ---
 
- - 添加 **路由控制** 功能, 控制流量是否走 VPN
+ 本项目是 [ShadowVPN][1] 在 OpenWrt 上的移植  
+ 当前版本: 0.1.5-2  
+ [预编译 IPK 下载][2]  
 
-   > 默认不带路由文件, 可读取 ChinaDNS-C 的 [chnroute][3] 生成国内路由规则, 否则为全局模式.  
-
-编译说明
+编译
 ---
 
- - 从 OpenWrt 的 [SDK][S] 编译, [预编译 IPK 下载][2]
+ - 从 OpenWrt 的 [SDK][S] 编译  
 
- > ```bash
- > # 以 ar71xx 平台为例
- > tar xjf OpenWrt-SDK-ar71xx-for-linux-x86_64-gcc-4.8-linaro_uClibc-0.9.33.2.tar.bz2
- > cd OpenWrt-SDK-ar71xx-*
- > # 获取 Makefile
- > git clone https://github.com/aa65535/openwrt-shadowvpn.git package/shadowvpn
- > # 选择要编译的包 Network -> ShadowVPN
- > make menuconfig
- > # 开始编译
- > make package/shadowvpn/compile V=99
- > ```
+   ```bash
+   # 以 ar71xx 平台为例
+   tar xjf OpenWrt-SDK-ar71xx-for-linux-x86_64-gcc-4.8-linaro_uClibc-0.9.33.2.tar.bz2
+   cd OpenWrt-SDK-ar71xx-*
+   # 获取 Makefile
+   git clone https://github.com/aa65535/openwrt-shadowvpn.git package/shadowvpn
+   # 选择要编译的包 Network -> ShadowVPN
+   make menuconfig
+   # 开始编译
+   make package/shadowvpn/compile V=99
+   ```
 
-配置说明
+配置
 ---
 
  - VPN 网关默认为 `10.7.0.1` 需要保证此网段未被占用  
 
  - 建议[搭配 ChinaDNS-C 使用][8], 以获得更好的使用体验  
+
+ - 添加 **路由控制** 功能, 控制流量是否走 VPN
+
+   > 默认不带路由文件, 可读取 ChinaDNS-C 的 [chnroute][3] 生成国内路由规则, 否则为全局模式.  
 
  - 关于 [LuCI][L] 中路由表设置(uci: route_mode)  
 
@@ -42,23 +44,24 @@ OpenWrt's ShadowVPN Makefile
 
     * **国外路由(2):** 只有路由文件中的 IP 经过 VPN, 如路由文件不存在则不使用 VPN  
 
-相关项目
----
+----------
 
  Name                     | Description
  -------------------------|-----------------------------------
- [openwrt-chinadns][5]    | OpenWrt's ChinaDNS-C Makefile
- [openwrt-dnsmasq][6]     | OpenWrt's Dnsmasq Patch & Makefile
- [openwrt-shadowsocks][7] | OpenWrt's ShadowSocks Makefile
- [openwrt-dist-luci][L]   | LuCI Applications of OpenWrt-dist
+ [openwrt-chinadns][5]    | ChinaDNS-C for OpenWrt
+ [openwrt-dnsmasq][6]     | Dnsmasq Patch & Makefile for OpenWrt
+ [openwrt-shadowsocks][7] | Shadowsocks-libev for OpenWrt
+ [openwrt-redsocks2][R]   | RedSocks2 for OpenWrt
+ [openwrt-dist-luci][L]   | LuCI Applications for OpenWrt-dist
 
 
   [1]: https://github.com/clowwindy/ShadowVPN
   [2]: https://sourceforge.net/projects/openwrt-dist/files/shadowvpn/
-  [3]: https://github.com/aa65535/openwrt-chinadns/blob/master/files/chinadns.route
+  [3]: https://github.com/clowwindy/ChinaDNS-C/blob/master/chnroute.txt
   [5]: https://github.com/aa65535/openwrt-chinadns
   [6]: https://github.com/aa65535/openwrt-dnsmasq
-  [7]: https://github.com/aa65535/openwrt-shadowsocks
+  [7]: https://github.com/shadowsocks/openwrt-shadowsocks
   [8]: https://sourceforge.net/p/openwrt-dist/wiki/Plan6/
-  [S]: http://downloads.openwrt.org/snapshots/trunk/
+  [R]: https://github.com/aa65535/openwrt-redsocks2
+  [S]: http://wiki.openwrt.org/doc/howto/obtain.firmware.sdk
   [L]: https://github.com/aa65535/openwrt-dist-luci
