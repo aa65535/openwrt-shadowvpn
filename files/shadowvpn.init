@@ -21,7 +21,7 @@ start_vpn() {
 		echo "Missing required configuration"
 		return 2
 	fi
-	mkdir -p /var/etc
+	mkdir -p $(dirname $CONFIG)
 	cat $TPL | grep -v "^#" | grep -v "^$" | \
 	sed -e "s#|SERVER|#$server#" \
 		-e "s#|PORT|#$port#" \
