@@ -13,7 +13,7 @@ PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/aa65535/openwrt-shadowvpn/releases/download/v$(PKG_VERSION)
-PKG_MD5SUM:=8c89f4e04f1ee5bd861cb44ffc4bd807
+PKG_MD5SUM:=5613fadee3d4c9f3b3ab11cf4e97aeca
 
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
