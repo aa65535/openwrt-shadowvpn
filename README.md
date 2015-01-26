@@ -5,7 +5,7 @@ ShadowVPN for OpenWrt
 ---
 
  本项目是 [ShadowVPN][1] 在 OpenWrt 上的移植  
- 当前版本: 0.1.5-2  
+ 当前版本: 0.1.6-1  
  [预编译 IPK 下载][2]  
 
 编译

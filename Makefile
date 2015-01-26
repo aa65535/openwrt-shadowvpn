@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ShadowVPN
-PKG_VERSION:=0.1.5
-PKG_RELEASE:=2
+PKG_VERSION:=0.1.6
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/aa65535/openwrt-shadowvpn/releases/download/v$(PKG_VERSION)
-PKG_MD5SUM:=5613fadee3d4c9f3b3ab11cf4e97aeca
+PKG_MD5SUM:=2bc0e62e54c1d6c8391eb6ccfeeda51c
 
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE

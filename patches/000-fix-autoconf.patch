@@ -53,11 +53,13 @@ diff --git a/libsodium/configure.ac b/libsodium/configure.ac
 index f73fe56..fd3ad37 100644
 --- a/libsodium/configure.ac
 +++ b/libsodium/configure.ac
-@@ -429,13 +429,9 @@ AS_IF([test "x$PKG_CONFIG" != "x"], [
-   AC_CONFIG_FILES([libsodium.pc])
- ])
+@@ -442,15 +442,10 @@
+ #endif])
+ 
  AC_CONFIG_FILES([Makefile
 -                 dist-build/Makefile
+                  libsodium.pc
+-                 libsodium-uninstalled.pc
 -                 msvc-scripts/Makefile
                   src/Makefile
                   src/libsodium/Makefile
