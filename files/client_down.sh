@@ -9,15 +9,10 @@ loger() {
 	echo "$(date '+%c') down.$1 ShadowVPN[$PID] $2"
 }
 
-# Get old value from saved file
-old_gw=$(cat /tmp/shadowvpn/old_gw 2>/dev/null)
-old_intf=$(cat /tmp/shadowvpn/old_intf 2>/dev/null)
+# Get original gateway
+loger info "Get the original default gateway"
+gateway=$(ip route show 0/0 | grep via | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}')
 route_mode=$(cat /tmp/shadowvpn/route_mode 2>/dev/null)
-
-if [ -z "$old_intf" ]; then
-	loger error "Can't get interface from saved file, check up.sh"
-	exit 1
-fi
 
 # Turn off NAT over VPN
 loger notice "Turn off NAT over $intf"
@@ -26,22 +21,17 @@ iptables -D FORWARD -o $intf -j ACCEPT
 iptables -D FORWARD -i $intf -j ACCEPT
 
 # Change routing table
-route del $server $old_intf
+ip route del $server
 if [ "$route_mode" != 2 ]; then
-	route del default
-	if [ -z "$old_gw" ]; then
-		route add default $old_intf
-		loger notice "Default route changed to $old_intf"
-	else
-		route add default gw $old_gw
-		loger notice "Default route changed to $old_gw"
-	fi
+	ip route del 0.0.0.0/1
+	ip route del 128.0.0.0/1
+	loger notice "Default route changed to original route"
 fi
 
 # Remove route rules
 if [ -f /tmp/shadowvpn/routes ]; then
-	sed -i 's#route add#route del#g' /tmp/shadowvpn/routes
-	ip -batch /tmp/shadowvpn/routes
+	sed -e "s/^/route del /" /tmp/shadowvpn/routes |\
+	ip -batch -
 	loger notice "Route rules have been removed"
 fi
 
