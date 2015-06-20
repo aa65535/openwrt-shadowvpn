@@ -44,6 +44,9 @@ define Package/ShadowVPN/conffiles
 /etc/config/shadowvpn
 endef
 
+# enable SSP
+TARGET_CFLAGS += -fstack-protector
+
 define Package/ShadowVPN/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/shadowvpn.init $(1)/etc/init.d/shadowvpn
