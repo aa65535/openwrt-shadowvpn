@@ -50,5 +50,8 @@ boot() {
 		mknod /dev/net/tun c 10 200
 		chmod 0666 /dev/net/tun
 	fi
+	until ip route show 0/0 | grep -q "^default"; do
+		sleep 1
+	done
 	start
 }
