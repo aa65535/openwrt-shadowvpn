@@ -5,7 +5,7 @@ ShadowVPN for OpenWrt
 ---
 
  本项目是 [ShadowVPN][1] 在 OpenWrt 上的移植  
- 当前版本: 0.1.6-1  
+ 当前版本: 0.2.0-1  
  [预编译 IPK 下载][2]  
 
 编译
@@ -28,11 +28,11 @@ ShadowVPN for OpenWrt
 配置
 ---
 
- - VPN 网关默认为 `10.7.0.1` 需要保证此网段未被占用  
+ - 多用户配置参考 [Wiki][W]  
 
  - 建议[搭配 ChinaDNS-C 使用][8], 以获得更好的使用体验  
 
- - 添加 **路由控制** 功能, 控制流量是否走 VPN
+ - 使用 **路由控制** 控制流量是否走 VPN
 
    > 默认不带路由文件, 可读取 ChinaDNS-C 的 [chnroute][3] 生成国内路由规则, 否则为全局模式.  
 
@@ -65,3 +65,4 @@ ShadowVPN for OpenWrt
   [R]: https://github.com/aa65535/openwrt-redsocks2
   [S]: http://wiki.openwrt.org/doc/howto/obtain.firmware.sdk
   [L]: https://github.com/aa65535/openwrt-dist-luci
+  [W]: https://github.com/clowwindy/ShadowVPN/wiki/Configure-Multiple-Users
