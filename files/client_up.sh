@@ -1,4 +1,11 @@
 #!/bin/sh
+#
+# Copyright (C) 2015 OpenWrt-dist
+# Copyright (C) 2015 Jian Chang <aa65535@live.com>
+#
+# This is free software, licensed under the GNU General Public License v3.
+# See /LICENSE for more information.
+#
 
 # This script will be executed when client is up.
 # All key value pairs in ShadowVPN config file will be passed to this script
